@@ -1,0 +1,26 @@
+{
+    "id": "4DDFC631",
+    "path": "D:/MMCSD-r-package/mmcsd/R/2.2.checkOptimParamsRequirements.R",
+    "project_path": "R/2.2.checkOptimParamsRequirements.R",
+    "type": "r_source",
+    "hash": "3184957680",
+    "contents": "",
+    "dirty": false,
+    "created": 1655580391027.0,
+    "source_on_save": false,
+    "relative_order": 42,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "13,54",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1647604223,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1647604223,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,26 @@
+{
+    "id": "50D871BD",
+    "path": "D:/MMCSD-r-package/mmcsd/R/2.main.R",
+    "project_path": "R/2.main.R",
+    "type": "r_source",
+    "hash": "2465436269",
+    "contents": "",
+    "dirty": false,
+    "created": 1655579555942.0,
+    "source_on_save": false,
+    "relative_order": 36,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "19,55",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1655579800,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1655579800853,
+    "read_only": false,
+    "read_only_alternatives": []
+}
