@@ -1,5 +1,5 @@
 
-# clm
+# mmcsd
 
 A package to deal with complex longitudinal survey data. It combines
 longitudinal methodology models with complex sampling design. It fits
@@ -9,7 +9,7 @@ specifications.
 
 ## Installation
 
-The clm package is in its initial development stage and does not yet
+The mmcsd package is in its initial development stage and does not yet
 have a version available on CRAN.
 
 However, the development version of the package is now available for
@@ -18,7 +18,7 @@ download and can be installed via the repository on
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("phmpacheco-ufjf/clm")
+devtools::install_github("phmpacheco-ufjf/mmcsd")
 ```
 
 ## Avaliable Functions
@@ -31,9 +31,9 @@ sampling design. The sigma argument can be: identity, exchangeable,
 autorregressive or a custom square matrix.
 
 ``` r
-library(clm)
+library(mmcsd)
 
-fit <- clm(
+fit <- mmcsd(
   score ~ wave + ageg + ecacg + qualifg,
   waves = wave, ids = id,
   weights = weight, stratum = strata, cluster = cluster,
@@ -41,7 +41,7 @@ fit <- clm(
 )
 summary(fit)
 #> Call:
-#> clm(formula = score ~ wave + ageg + ecacg + qualifg, waves = wave, 
+#> mmcsd(formula = score ~ wave + ageg + ecacg + qualifg, waves = wave, 
 #>     ids = id, weights = weight, stratum = strata, cluster = cluster, 
 #>     data = example_data, sigma = "exchangeable")
 #> 
@@ -121,13 +121,13 @@ Finally, we fit the model using our previous random effects fitted
 model.
 
 ``` r
-fitTheta <- cov_clm(fit,
+fitTheta <- cov_mmcsd(fit,
   fittingType = "PML", sigmaThetaExpr = "UCM",
   optimParams = list(par = c(7, 5))
 )
 summary(fitTheta)
 #> Call:
-#> cov_clm(fit = fit, fittingType = "PML", sigmaThetaExpr = "UCM", 
+#> cov_mmcsd(fit = fit, fittingType = "PML", sigmaThetaExpr = "UCM", 
 #>     optimParams = list(par = c(7, 5)))
 #> 
 #> Fitting Function Type: PML
