@@ -13,6 +13,8 @@ knitr::opts_chunk$set(
 
 # mmcsd
 
+Also know as: 'clm'(complex longitudinal model). Reference the scientific article: https://repositorio.ufjf.br/jspui/bitstream/ufjf/13437/1/pedrohenriquedemesquitapacheco.pdf
+
 A package to deal with complex longitudinal survey data. It combines
 longitudinal methodology models with complex sampling design. It fits fixed
 and random effects models and covariance structured models so far. It also
