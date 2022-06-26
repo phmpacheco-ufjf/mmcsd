@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# clm
+# mmcsd
 
 A package to deal with complex longitudinal survey data. It combines
 longitudinal methodology models with complex sampling design. It fits fixed
@@ -20,14 +20,14 @@ provides tools to perform statistical tests considering these specifications.
 
 ## Installation
 
-The clm package is in its initial development stage and does not yet have a version available on CRAN.
+The mmcsd package is in its initial development stage and does not yet have a version available on CRAN.
 
 However, the development version of the package is now available for download and can be installed via
 the repository on [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("phmpacheco-ufjf/clm")
+devtools::install_github("phmpacheco-ufjf/mmcsd")
 ```
 ## Avaliable Functions
 
@@ -37,9 +37,9 @@ First, we fit the fixed and random effects model considering the survey sampling
 The sigma argument can be: identity, exchangeable, autorregressive or a custom square matrix.
 
 ```{r}
-library(clm)
+library(mmcsd)
 
-fit <- clm(
+fit <- mmcsd(
   score ~ wave + ageg + ecacg + qualifg,
   waves = wave, ids = id,
   weights = weight, stratum = strata, cluster = cluster,
@@ -58,7 +58,7 @@ sigmaThetaExpr_viewer("UCM", 5)
 Finally, we fit the model using our previous random effects fitted model.
 
 ```{r}
-fitTheta <- cov_clm(fit,
+fitTheta <- cov_mmcsd(fit,
   fittingType = "PML", sigmaThetaExpr = "UCM",
   optimParams = list(par = c(7, 5))
 )
