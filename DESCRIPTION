@@ -2,11 +2,20 @@ Package: mmcsd
 Title: A package to deal with complex longitudinal survey data
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Pedro",
+    c(person(given = "Pedro",
            family = "Pacheco",
            role = c("aut", "cre"),
            email = "pedrohmp36@gmail.com",
-           comment = c(ORCID = "0000-0003-4804-1576"))
+           comment = c(ORCID = "0000-0003-4804-1576")),
+      person(given = "Marcel",
+           family = "Vieira",
+           role = "aut",
+           email = "marcel.vieira@ufjf.br",
+           comment = c(ORCID = "0000-0002-0456-380X")),
+      person(given = "Gustavo",
+           family = "Silva",
+           role = "aut",
+           email = "gustavoalmeidasilva@ice.ufjf.br"))
 Description: A package to deal with complex longitudinal survey data. It combines
     longitudinal methodology models with complex sampling design. It fits fixed
     and random effects models and covariance structured models so far. It also
