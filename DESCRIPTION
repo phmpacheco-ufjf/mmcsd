@@ -5,7 +5,7 @@ Authors@R:
     c(person(given = "Pedro",
            family = "Pacheco",
            role = c("aut", "cre"),
-           email = "gustavoalmeidasilva@ice.ufjf.br",
+           email = "pedrohmp36@gmail.com",
            comment = c(ORCID = "0000-0003-4804-1576")),
       person(given = "Marcel",
            family = "Vieira",
