@@ -1,6 +1,6 @@
 Package: Mmcsd
 Title: A package to deal with complex longitudinal survey data
-Version: 0.0.1
+Version: 1.0.0
 Authors@R: 
     c(person(given = "Pedro",
            family = "Pacheco",
@@ -37,3 +37,4 @@ Imports:
     tidyr
 Depends: 
     R (>= 2.10)
+
