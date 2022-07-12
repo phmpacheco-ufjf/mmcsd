@@ -1,11 +1,11 @@
-Package: mmcsd
+Package: Mmcsd
 Title: A package to deal with complex longitudinal survey data
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     c(person(given = "Pedro",
            family = "Pacheco",
            role = c("aut", "cre"),
-           email = "pedrohmp36@gmail.com",
+           email = "gustavoalmeidasilva@ice.ufjf.br",
            comment = c(ORCID = "0000-0003-4804-1576")),
       person(given = "Marcel",
            family = "Vieira",
