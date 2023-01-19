@@ -4,7 +4,7 @@
 * Debian Linux, R-realase, GCC
 * win-builder (devel)
 
-##R CMD check results 
+## R CMD check results 
 * Duration: 17s
 
 * 0 errors √ | 0 warnings √ | 0 notes √
