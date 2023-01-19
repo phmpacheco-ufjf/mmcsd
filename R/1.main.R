@@ -1,5 +1,7 @@
 #' Fit fixed and random effects longitudinal model.
 #'
+#' Estimate the fixed effects of the model, also known as β parameters of the regression,taking into account the sampling plan of the research, and also estimating the covariance matrix of the model considering the estimates of β
+#'
 #' @param formula A formula
 #' @param waves a dataframe column or an array
 #' @param ids a dataframe column or an array
@@ -12,6 +14,14 @@
 #' @return The fit model with class 'mmcsd'.
 #'
 #' @export
+#' 
+#' @examples  
+#' fit <- mmcsd(
+#'  score ~ wave + ageg + ecacg + qualifg,
+#'  waves = wave, ids = id,
+#'  weights = weight, stratum = strata, cluster = cluster,
+#'  data = example_data, sigma = "exchangeable"
+#' )
 
 
 mmcsd <- function(formula, waves, ids, weights, stratum, cluster, data, sigma = "identity") {
