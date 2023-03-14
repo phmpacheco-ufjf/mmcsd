@@ -1,5 +1,5 @@
 Package: Mmcsd
-Title: A package to deal with complex longitudinal survey data
+Title: 	Modeling Complex Longitudinal Data in a Quick and Easy Way
 Version: 1.0.0
 Authors@R: 
     c(person(given = "Pedro",
@@ -16,10 +16,9 @@ Authors@R:
            family = "Silva",
            role = "aut",
            email = "gustavoalmeidasilva@ice.ufjf.br"))
-Description: A package to deal with complex longitudinal survey data. It combines
-    longitudinal methodology models with complex sampling design. It fits fixed
+Description: Matching longitudinal methodology models with complex sampling design. It fits fixed
     and random effects models and covariance structured models so far. It also
-    provides tools to perform statistical tests considering these specifications.
+    provides tools to perform statistical tests considering these specifications as described in : Pacheco, P. H. (2021). Modelagem de dados longitudinais complexos no R: desenvolvimento de um pacote estatístico. <https://repositorio.ufjf.br/jspui/bitstream/ufjf/13437/1/pedrohenriquedemesquitapacheco.pdf>.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -37,4 +36,9 @@ Imports:
     tidyr
 Depends: 
     R (>= 2.10)
-
+VignetteBuilder: knitr
+Suggests: 
+    rmarkdown,
+    simstudy,
+    kableExtra,
+    tidyverse
