@@ -1,0 +1,361 @@
+---
+title: "Modeling complex longitudinal data in a quick and easy way"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Modeling complex longitudinal data in a quick and easy way}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(Mmcsd)
+library(simstudy)
+library(kableExtra)
+library(tidyverse)
+```
+
+
+
+# Complex longitudinal data and the package
+
+A survey is a method of collecting information from an audience with the aim of learning more about them. What you learn can be used to make better business decisions or inform research.
+
+
+Among the various sampling methods, the package focuses on modeling complex longitudinal data.
+
+Longitudinal observations consist of repeated measurements on the same units over a number of occasions, with fixed or
+varying time spells between the occasions. Complex sampling plans are usually the result of a combination
+of SRS with and without replacement with other sampling plan(s), such as:
+Stratified sampling; Conglomerate sampling; e Sampling with unequal probabilities; among others
+
+Mmcsd is a package to deal with complex longitudinal survey data. It combines longitudinal methodology models with complex sampling design. It fits fixed and random effects models and covariance structured models so far. It also provides tools to perform statistical tests considering these specifications.
+
+
+# Functional programming
+First, we emphasize that the package used the concepts of functional programming during its development, aiming to optimize the search for errors and reduce the execution time of each function.
+
+We will follow the following tripod:
+
+* Small functions
+  + Practice of separating the algorithm into increasingly simple functions that will naturally reduce the size of each function
+   
+* Function and purpose
+  + Functions must have a single purpose, that is, it is not enough to simply divide a function because of its size, when partitioning a function into smaller ones, the focus must be precisely on the unique output parameter.
+   
+* Encapsulation
+  + The function available for use is the call of other minor functions
+   
+
+   
+# Package Avaliable Functions
+
+##  1 - Defining
+
+The package has the following functions available to users currently
+
+* **mmcsd**
+  + Estimate the fixed effects of the model, also known as $\beta$ parameters of the regression,taking into account the sampling plan of the research, and also estimating the covariance matrix of the model considering the estimates of $\beta$
+
+* **cov_mmcsd**
+  + This function is responsible for performing the modeling of the model's covariance matrix through the use of covariance structures.
+  
+* **sigmaThetaExpr_viewer** 
+  + Knowing the difficulty of visualizing the covariance structure, especially when the user chooses to determine his own structure. This function was developed,that allows the user to view the provided structure even before it is evaluated, that is, through mathematics symbolic.
+  
+## 2 - How to call it
+
+The following commands are also available using the **help()** function. For a better understanding of each function, we will explain each input parameter. 
+
+* We recommend using the functions in the following sequence :
+
+1. *mmcsd*
+2. *sigmaThetaExpr_viewer*
+3. *cov_mmcsd*
+
+* **mmcsd**
+
+```{r eval=FALSE, include=TRUE}
+mmcsd=function(formula, waves, ids, weights, stratum, cluster, data, sigma = "identity")
+```
+   *formula*: A formula type struct. Represents the shape of the explanatory variables
+  
+   *waves*: A dataframe column or an array. Represents the waves(rounds) of the longitudinal data
+  
+   *ids*: A dataframe column or an array. Represents the id of each variable
+   
+   *data*: A dataframe or tibble. It must be the structure that contains the data
+   
+   *sigma*: The sigma argument can be: **identity**, **exchangeable**, **autorregressive** or a **custom square matrix**. 
+
+   
+* Complex plane inputs
+  
+   *weights*: A dataframe column or an array. Represents the weight of each variable, if this has been used by the researcher in the complex sampling method
+   
+   *stratum*: A dataframe column or an array. Represents the data stratification, if this has been used by the researcher in the complex sampling method
+   
+   *cluster*: A dataframe column or an array. Represents the data clustering, if this has been used by the researcher in the complex sampling method
+   
+   
+* **sigmaThetaExpr_viewer**
+
+```{r eval=FALSE, include=TRUE}
+sigmaThetaExpr_viewer=function(sigmaThetaExpr, numWaves = NULL)
+```
+
+*sigmaThetaExpr*: A character with the covariance structure type or a list of expressions. The user has the following options available: **UCM**, **AR1**, **ARMA11**, **ARH1**, **Heterogeneous UCM**, **Heterogeneous Toeplitz**, **Unstructured** and **Predependence Order 1**
+
+*numWaves*: An integer with the size of the square matrix to be printed.
+
+   
+   
+* **cov_mmcsd**
+
+```{r eval=FALSE, include=TRUE}
+cov_mmcsd=function(fit, fittingType, sigmaThetaExpr, optimParams)
+```
+  
+*fit*: A fit model with class 'mmcsd' (The object returned by the mmcsd function)
+
+*fittingType*: 
+
+*sigmaThetaExpr*: A character with the covariance structure type or a list of expressions. We recommend using the *sigmaThetaExpr_viewer* function first, which facilitates the visualization and choice of the model
+
+*optimParams*:	A list with configuration for optim function. 'Par' is required.
+
+# Examples
+
+## British Household Panel Survey - BHPS
+
+BHPS is a panel-type longitudinal household survey and had its first round in 1991. sample was selected by a two-stage stratified sampling design with conglomeration by postal sectors. These postal sectors were selected in a systematic and considering selection probabilities proportional to its size, or that is, the number of households in the same postal sector. Then, in each of selected postal sectors, three households were chosen at random and within from each household, all individuals were surveyed (Vieira, 2012).
+
+First, the **mmcsd()** function was used, where first, using the *formula* type, the response variable and its explanatory variables were defined, after which the complex sampling plan used in the research was defined
+
+```{r}
+fit <- mmcsd(
+  score ~ wave + ageg + ecacg + qualifg,
+  waves = wave, ids = id,
+  weights = weight, stratum = strata, cluster = cluster,
+  data = example_data, sigma = "exchangeable"
+)
+```
+
+After that, the **sigmaThetaExpr_viewer()** function was used to visualize the covariance structure, where the $UCM$ and the $AR1$ type were the options selected 
+
+```{r}
+sigmaThetaExpr_viewer("UCM", 5)
+```
+ 
+```{r}
+sigmaThetaExpr_viewer("AR1", 5)
+```
+ 
+
+Finally, the **fitTheta()** function was used to model the covariance matrix, using the $UCM$ and the $AR1$ covariance structure, chosen from the **sigmaThetaExpr_viewer()** function.
+ 
+```{r}
+fitTheta_ucm <- cov_mmcsd(fit,
+  fittingType = "PML", sigmaThetaExpr = "UCM",
+  optimParams = list(par = c(7, 5))
+)
+
+
+fitTheta_ar1 <- cov_mmcsd(fit,
+  fittingType = "PML", sigmaThetaExpr = "AR1",
+  optimParams = list(par = c(0.8, 1,0.8))
+)
+
+```
+
+
+```{r echo=FALSE}
+fitTheta_df=data.frame(RMR=c(fitTheta_ucm$gofMeasures$RMR,fitTheta_ar1$gofMeasures$RMR),AGFI=c(fitTheta_ucm$gofMeasures$AGFI,fitTheta_ar1$gofMeasures$AGFI),N_Params=c(2,3))
+
+row.names(fitTheta_df)=c("UCM_structure","AR1_structure")
+
+kbl(fitTheta_df) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+Therefore, in this real world problem example, the 2 models performed very well. It is possible to see that the $AR1$ model performed a little better, yet needs more optimization parameters, and then the choice of the best model should be decided by the researcher.
+
+```{r include=FALSE}
+write_matex <- function(x) {
+  begin <- "$$\\begin{bmatrix}"
+  end <- "\\end{bmatrix}$$"
+  X <-
+    apply(x, 1, function(x) {
+      paste(
+        paste(x, collapse = "&"),
+        "\\\\"
+      )
+    })
+  writeLines(c(begin, X, end))
+}
+
+```
+
+
+
+Using the $UCM$ model as an example, this is the sigma matrix returned by the cov_mmcsd function
+
+```{r, results = 'asis'}
+write_matex(fitTheta_ucm$sigmaTheta)
+```
+
+
+## Using a longitudinal dataset simulated by the 'simstudy' package
+
+
+In this second example, we used simulated data from the **defData()** and **genData()** functions, available in the **simstudy** package. It was considered that the explanatory variables follow a normal distribution.
+
+In both examples, a simple sample plan, and so, there is no need to define sampling plan
+
+### Linear formula population
+
+First, the population was defined, where the normality of the observations was assumed.
+
+```{r}
+
+set.seed(1108)
+
+tdef <- defData(varname = "T", dist = "binary", formula = 0.5)
+tdef <- defData(tdef, varname = "Y0", dist = "normal", formula = 10, variance = 1)
+tdef <- defData(tdef, varname = "Y1", dist = "normal", formula = "Y0 + 2",
+                variance = 1)
+tdef <- defData(tdef, varname = "Y2", dist = "normal", formula = "Y0 + 3",
+                variance = 1)
+tdef <- defData(tdef, varname = "Y3", dist = "normal", formula = "Y0 + 4",
+                variance = 1)
+tdef <- defData(tdef, varname = "Y4", dist = "normal", formula = "Y0 + 5",
+                variance = 1)
+
+
+
+dtTrial <- genData(1000, tdef)
+
+dtTime <- addPeriods(dtTrial, nPeriods = 5, idvars = "id", timevars = c("Y0", "Y1",
+                                                                        "Y2", "Y3", "Y4"), timevarName = "Y")
+
+dtTime %>% 
+  ggplot(aes(x = Y)) + geom_histogram() + facet_wrap(~period) + theme_bw()
+
+```
+
+```{r}
+fit=mmcsd(Y~period,ids = id,waves =  period, data=dtTime,sigma = 'exchangeable' )
+
+```
+
+Testing $UCM$ and $AR1$ as covariance structures
+
+```{r}
+
+fitTheta_ucm <- cov_mmcsd(fit,
+                      fittingType = "PML", sigmaThetaExpr = "UCM",
+                      optimParams = list(par = c(1, 1))
+)
+
+fitTheta_ar1 <- cov_mmcsd(fit,
+                      fittingType = "PML", sigmaThetaExpr = "AR1",
+                      optimParams = list(par = c(1, 1, -0.5))
+)
+
+```
+
+```{r echo=FALSE}
+fitTheta_df=data.frame(RMR=c(fitTheta_ucm$gofMeasures$RMR,fitTheta_ar1$gofMeasures$RMR),AGFI=c(fitTheta_ucm$gofMeasures$AGFI,fitTheta_ar1$gofMeasures$AGFI),N_Params=c(2,3))
+
+row.names(fitTheta_df)=c("UCM_structure","AR1_structure")
+
+kbl(fitTheta_df) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+
+Therefore, in a population of constant form, the 2 models performed very well. It is possible to see that the $UCM$ model performed a little better, and needs fewer optimization parameters, and thus becomes the most suitable model for the situation.
+
+
+So this is the sigma matrix returned by the cov_mmcsd function using the $UCM$ model
+
+```{r, results = 'asis'}
+write_matex(fitTheta_ucm$sigmaTheta)
+```
+
+### Memoryless population
+
+```{r}
+tdef <- defData(varname = "T", dist = "binary", formula = 0.5)
+tdef <- defData(tdef, varname = "Y0", dist = "normal", formula = 10, variance = 1)
+tdef <- defData(tdef, varname = "Y1", dist = "normal", formula = "Y0 * 0.7 + 1",
+                variance = 1)
+tdef <- defData(tdef, varname = "Y2", dist = "normal", formula = "Y1 * 0.7 + 1",
+                variance = 1)
+tdef <- defData(tdef, varname = "Y3", dist = "normal", formula = "Y2 * 0.7 + 1",
+                variance = 1)
+tdef <- defData(tdef, varname = "Y4", dist = "normal", formula = "Y3 * 0.7 + 1",
+                variance = 1)
+
+
+
+dtTrial <- genData(1000, tdef)
+
+dtTime <- addPeriods(dtTrial, nPeriods = 5, idvars = "id", timevars = c("Y0", "Y1",
+                                                                        "Y2", "Y3", "Y4"), timevarName = "Y")
+
+
+dtTime %>% 
+  ggplot(aes(x = Y)) + geom_histogram() + facet_wrap(~period) + theme_bw()
+
+```
+
+
+
+```{r}
+fit=mmcsd(Y~period,ids = id,waves =  period, data=dtTime,sigma = 'exchangeable' )
+```
+
+Testing $UCM$ and $AR1$ as covariance structures
+
+```{r}
+fitTheta_ucm <- cov_mmcsd(fit,
+                      fittingType = "PML", sigmaThetaExpr = "UCM",
+                      optimParams = list(par = c(1, 1))
+)
+
+fitTheta_ar1 <- cov_mmcsd(fit,
+                      fittingType = "PML", sigmaThetaExpr = "AR1",
+                      optimParams = list(par = c(1, 1, -0.5))
+)
+```
+
+```{r echo=FALSE}
+
+fitTheta_df=data.frame(RMR=c(fitTheta_ucm$gofMeasures$RMR,fitTheta_ar1$gofMeasures$RMR),AGFI=c(fitTheta_ucm$gofMeasures$AGFI,fitTheta_ar1$gofMeasures$AGFI),N_Params=c(2,3))
+
+row.names(fitTheta_df)=c("UCM_structure","AR1_structure")
+
+kbl(fitTheta_df) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
+
+```
+
+In this example, where the population has the memoryless property, the $AR1$ model has a performance considerably superior to the $UCM$ model, and thus becomes the most suitable model for this type of population. This can be explained by the fact that the population, when generated, has an autoregressive structure. This can be observed by the formula argument in the 'tdef' function
+
+
+So this is the sigma matrix returned by the cov_mmcsd function using the $AR1$ model
+
+```{r, results = 'asis'}
+write_matex(fitTheta_ar1$sigmaTheta)
+```
+
+
