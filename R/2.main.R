@@ -1,5 +1,7 @@
 #' Fit covariance structered longitudinal model.
 #'
+#' Responsible for performing the modeling of the model's covariance matrix through the use of covariance structures.
+#'
 #' @param fit A fit model with class 'mmcsd'
 #' @param fittingType A character with the fitting function type. See optins above
 #' @param sigmaThetaExpr A character with the covariance structure type or a list of expressions
@@ -8,6 +10,18 @@
 #' @return The fit model with class 'mmcsd.theta'.
 #'
 #' @export
+#' 
+#' @examples
+#' fit <- mmcsd(
+#'  score ~ wave + ageg + ecacg + qualifg,
+#'  waves = wave, ids = id,
+#'  weights = weight, stratum = strata, cluster = cluster,
+#'  data = example_data, sigma = "exchangeable"
+#' )
+#' fitTheta_ucm <- cov_mmcsd(fit,
+#'  fittingType = "PML", sigmaThetaExpr = "UCM",
+#'  optimParams = list(par = c(7, 5))
+#' )
 
 cov_mmcsd <- function(fit, fittingType, sigmaThetaExpr, optimParams) {
   call <- match.call() # Capture function call

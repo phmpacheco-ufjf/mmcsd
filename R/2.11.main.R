@@ -6,6 +6,18 @@
 #' @return Return NULL and print in terminal the results.
 #'
 #' @export
+#' 
+#' @examples
+#' fit <- mmcsd(
+#'  score ~ wave + ageg + ecacg + qualifg,
+#'  waves = wave, ids = id,
+#'  weights = weight, stratum = strata, cluster = cluster,
+#'  data = example_data, sigma = "exchangeable"
+#' )
+#' fitTheta_ucm <- cov_mmcsd(fit,
+#'  fittingType = "PML", sigmaThetaExpr = "UCM",
+#'  optimParams = list(par = c(7, 5))
+#' )
 
 summary.mmcsd.theta <- function(object, ...) {
   thetaTable <- getThetaTable(object)
